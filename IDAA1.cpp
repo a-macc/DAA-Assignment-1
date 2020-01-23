@@ -212,78 +212,81 @@ void printArray(int arr[], int size)
 }  
 
 int main() {
-    double average_time, smallest_time, largest_time, total_time;
-    vector<double> average, smallest, largest;
-    clock_t s1, e1;
     int x;
 
-    x = 5;
+    for (x = 1; x <= 5; x++) {
+        double average_time, smallest_time, largest_time, total_time;
+        vector<double> average, smallest, largest;
+        clock_t s1, e1;
 
-    for (int n = 0; n <= 1000; n += 10) {        
-        smallest_time = DBL_MAX;
-        largest_time = DBL_MIN;
-        total_time = 0;
+        for (int n = 0; n <= 1000; n += 10) {        
+            smallest_time = DBL_MAX;
+            largest_time = DBL_MIN;
+            total_time = 0;
 
-        for (int i = 0; i < 100; i++) {
-            int arr[n];
-            for (int i = 0; i < n; i++) {
-                arr[i] = rand() % 100000;
+            for (int i = 0; i < 100; i++) {
+                int arr[n];
+                for (int i = 0; i < n; i++) {
+                    arr[i] = rand() % 100000;
+                }
+
+                if (x == 1) {
+                    s1 = clock();
+                    insertionSort(arr, n);
+                    e1 = clock();
+                } else if (x == 2) {
+                    s1 = clock();
+                    quickSort(arr, 0, n - 1);
+                    e1 = clock();
+                } else if (x == 3) {
+                    s1 = clock();
+                    mergeSort(arr, 0, n - 1);
+                    e1 = clock();
+                } else if (x == 4) {
+                    s1 = clock();
+                    heapSort(arr, n);
+                    e1 = clock();
+                } else {
+                    s1 = clock();
+                    hashTableSort(arr, n);
+                    e1 = clock();
+                }
+
+                double time = (double(e1 - s1) / double(CLOCKS_PER_SEC));
+                if (time > largest_time) {
+                    largest_time = time;
+                }
+                if (time < smallest_time) {
+                    smallest_time = time;
+                }
+
+                total_time += time;
             }
 
-            if (x == 1) {
-                s1 = clock();
-                insertionSort(arr, n);
-                e1 = clock();
-            } else if (x == 2) {
-                s1 = clock();
-                quickSort(arr, 0, n - 1);
-                e1 = clock();
-            } else if (x == 3) {
-                s1 = clock();
-                mergeSort(arr, 0, n - 1);
-                e1 = clock();
-            } else if (x == 4) {
-                s1 = clock();
-                heapSort(arr, n);
-                e1 = clock();
-            } else {
-                s1 = clock();
-                hashTableSort(arr, n);
-                e1 = clock();
-            }
+            average_time = total_time / 100;
 
-            double time = (double(e1 - s1) / double(CLOCKS_PER_SEC));
-            if (time > largest_time) {
-                largest_time = time;
-            }
-            if (time < smallest_time) {
-                smallest_time = time;
-            }
-
-            total_time += time;
+            average.push_back(average_time);
+            smallest.push_back(smallest_time);
+            largest.push_back(largest_time);
         }
 
-        average_time = total_time / 100;
+        for (int i = 0; i < largest.size(); i++) {
+            cout << fixed << largest[i] * 1000 << setprecision(6) << endl;
+        }
+        cout << endl;
 
-        average.push_back(average_time);
-        smallest.push_back(smallest_time);
-        largest.push_back(largest_time);
-    }
+        for (int i = 0; i < smallest.size(); i++) {
+            cout << fixed << smallest[i] * 1000 << setprecision(6) << endl;
+        }
+        cout << endl;
 
-    for (int i = 0; i < largest.size(); i++) {
-        cout << fixed << largest[i] << setprecision(6) << endl;
-    }
-    cout << endl;
+        for (int i = 0; i < average.size(); i++) {
+            cout << fixed << average[i] * 1000 << setprecision(6) << endl;
+        }
+        cout << endl;
 
-    for (int i = 0; i < smallest.size(); i++) {
-        cout << fixed << smallest[i] << setprecision(6) << endl;
+        cout << endl << endl;
     }
-    cout << endl;
-
-    for (int i = 0; i < average.size(); i++) {
-        cout << fixed << average[i] << setprecision(6) << endl;
-    }
-    cout << endl;
 }
 
 
